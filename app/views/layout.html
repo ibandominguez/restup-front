@@ -18,9 +18,17 @@
     </ion-header-bar>
     <ion-content class="navbar-content">
       <ion-list>
+        <ion-item menu-close href="#/app/dashboard" class="item-icon-left">
+          <i class="icon ion-android-color-palette"></i>
+          Dashboard
+        </ion-item>
         <ion-item menu-close href="#/app/resources/{{ resource.title }}" class="item-icon-left" ng-repeat="resource in resources track by $index">
           <i class="icon ion-android-list"></i>
           {{ resource.title | capitalize }}
+        </ion-item>
+        <ion-item menu-close href="#/app/settings" class="item-icon-left">
+          <i class="icon ion-gear-a"></i>
+          Settings
         </ion-item>
       </ion-list>
     </ion-content>

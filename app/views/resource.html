@@ -1,7 +1,19 @@
-<ion-view view-title="DASHBOARD">
+<ion-view view-title="{{ selectedResource | uppercase }}">
   <ion-content>
     <div class="list">
-      
+      <label class="item item-divider item-input item-select">
+        <div class="input-label">
+          Show by key:
+        </div>
+        <select ng-model="showingField" ng-options="field.title as field.title for field in getResourceFields(selectedResource)">
+        </select>
+      </label>
+
+      <a class="item item-icon-right" href="#" ng-repeat="item in results track by $index">
+        <b>{{ item.id }}. </b>
+        {{ item[showingField] }}
+        <i class="icon ion-arrow-right-c"></i>
+      </a>
     </div>
   </ion-content>
 </ion-view>

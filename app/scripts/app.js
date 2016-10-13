@@ -36,5 +36,17 @@ angular.module('restup-front', ['ionic', 'ngCordova', 'restup-front.views', 'res
       views: {
         main: { templateUrl: 'views/dashboard.html' }
       }
+    })
+    .state('app.resource', {
+      url: '/resources/:resource',
+      views: {
+        main: { templateUrl: 'views/resource.html', controller: 'ResourceCtrl' }
+      }
+    })
+    .state('app.settings', {
+      url: '/settings',
+      views: {
+        main: { templateUrl: 'views/settings.html' }
+      }
     });
 }]);
