@@ -1,6 +1,10 @@
 
 /* General */
 
+* {
+  border-radius: 0 !important;
+}
+
 body, h1, h2, h3, h4, h5, h6, p, ul, li, a, input, button, select, textarea {
   font-family: 'Roboto', sans-serif;
   color: #555;

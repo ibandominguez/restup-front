@@ -2,7 +2,7 @@
 
 angular.module('restup-front.controllers', [])
 
-.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$timeout', function($scope, resource, $state, localStorageService, $timeout) {
+.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', function($scope, resource, $state, localStorageService) {
   $scope.getResourceFields = function(title) {
     if (!$scope.resources) {
       return;
@@ -15,21 +15,17 @@ angular.module('restup-front.controllers', [])
     }
   };
 
-  $scope.toast = function(message, time) {
-    alert(message);
-  };
-
   resource.query('/resources')
     .success(function(resources) {
       $scope.resources = resources;
     })
     .error(function(error) {
-      $scope.toast('Error connecting with the rest api');
+      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
       $state.go('app.settings');
     });
 }])
 
-.controller('ResourceCtrl', ['$scope', 'resource', '$stateParams', '$ionicModal', function($scope, resource, $stateParams, $ionicModal) {
+.controller('ResourceCtrl', ['$scope', 'resource', '$stateParams', '$ionicModal', '$ionicPopup', function($scope, resource, $stateParams, $ionicModal, $ionicPopup) {
   $scope.results = [];
   $scope.fields = null;
   $scope.selectedItem = null;
@@ -53,7 +49,7 @@ angular.module('restup-front.controllers', [])
         $scope.modal.hide();
       })
       .error(function(err) {
-        $scope.toast(err && err.error);
+        $ionicPopup.alert({ title: 'Error', template: err && err.error, okType: 'button-dark' });
       });
   };
 
@@ -64,7 +60,7 @@ angular.module('restup-front.controllers', [])
         $scope.results.splice($scope.results.indexOf(item), 1);
       })
       .error(function(err) {
-        $scope.toast('Error connecting with the rest api');
+        $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
       });
   };
 
@@ -75,7 +71,7 @@ angular.module('restup-front.controllers', [])
       $scope.showingField = $scope.fields[0].title;
     })
     .error(function(error) {
-      $scope.toast('Error connecting with the rest api');
+      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
     })
 }])
 
