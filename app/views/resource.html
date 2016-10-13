@@ -9,9 +9,10 @@
         </select>
       </label>
 
-      <a class="item item-icon-right" ng-repeat="item in results track by $index">
+      <a class="item " ng-repeat="item in results track by $index">
         <b>{{ item.id }}. </b>
         {{ item[showingField] }}
+        <span class="item-note">{{ item.created_at | toDate | date: 'dd/MM/yyyy' }}</span>
       </a>
     </div>
   </ion-content>
