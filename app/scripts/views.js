@@ -1,0 +1,1 @@
+angular.module("restup-front.views", []);
