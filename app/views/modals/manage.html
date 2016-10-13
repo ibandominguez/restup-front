@@ -1,0 +1,16 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-dark">
+    <h1 class="title">{{ selectedItem.id ? 'MANAGING' : 'CREATING' }} {{ selectedResource | uppercase }}</h1>
+    <button class="button button-clear button-primary" ng-click="modal.hide()">CANCEL</button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+      <label class="item item-input" ng-repeat="field in getResourceFields(selectedResource)">
+        <span class="input-label">{{ field.title }}</span>
+        <input ng-model="selectedItem[field.title]" type="text">
+      </label>
+      <button class="button button-full button-stable no-margin-top no-margin-bottom" ng-click="updateOrCreate(selectedItem)">SEND</button>
+      <button ng-show="selectedItem.id" class="button button-full button-assertive no-margin-top" ng-click="remove(selectedItem)">REMOVE</button>
+    </div>
+  </ion-content>
+</ion-modal-view>
