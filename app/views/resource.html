@@ -9,10 +9,9 @@
         </select>
       </label>
 
-      <a class="item item-icon-right" href="#" ng-repeat="item in results track by $index">
+      <a class="item item-icon-right" ng-repeat="item in results track by $index">
         <b>{{ item.id }}. </b>
         {{ item[showingField] }}
-        <i class="icon ion-arrow-right-c"></i>
       </a>
     </div>
   </ion-content>

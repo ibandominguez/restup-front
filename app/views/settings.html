@@ -3,13 +3,13 @@
     <div class="list">
       <label class="item item-input item-stacked-label">
         <span class="input-label">Client url</span>
-        <input type="text" placeholder="http://yourrestapiendpoint.com">
+        <input ng-model="form.webUrl" type="text" placeholder="http://yourrestapiendpoint.com">
       </label>
       <label class="item item-input item-stacked-label">
         <span class="input-label">Endoint url</span>
-        <input type="text" placeholder="http://yourrestapiendpoint.com">
+        <input ng-model="form.apiUrl" type="text" placeholder="http://yourrestapiendpoint.com">
       </label>
-      <button class="button button-block button-stable no-margin-top">
+      <button ng-click="save()" class="button button-block button-stable no-margin-top">
         SAVE
       </button>
     </div>
