@@ -10,6 +10,9 @@
       </ion-nav-buttons>
     </ion-nav-bar>
     <ion-nav-view name="main"></ion-nav-view>
+    <div ng-show="toastMessage" ng-class="{ on: toastMessage }" class="bar bar-footer bar-assertive toast">
+      <div class="title">{{ toastMessage }}</div>
+    </div>
   </ion-side-menu-content>
 
   <ion-side-menu side="left" class="navbar">
@@ -18,9 +21,17 @@
     </ion-header-bar>
     <ion-content class="navbar-content">
       <ion-list>
+        <ion-item menu-close href="#/app/dashboard" class="item-icon-left">
+          <i class="icon ion-android-color-palette"></i>
+          Dashboard
+        </ion-item>
         <ion-item menu-close href="#/app/resources/{{ resource.title }}" class="item-icon-left" ng-repeat="resource in resources track by $index">
           <i class="icon ion-android-list"></i>
           {{ resource.title | capitalize }}
+        </ion-item>
+        <ion-item menu-close href="#/app/settings" class="item-icon-left">
+          <i class="icon ion-gear-a"></i>
+          Settings
         </ion-item>
       </ion-list>
     </ion-content>
