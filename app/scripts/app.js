@@ -1,13 +1,8 @@
 'use strict';
 
-angular.module('restup-front', ['ionic', 'ngCordova', 'restup-front.views', 'restup-front.controllers', 'restup-front.services', 'restup-front.filters'])
+angular.module('restup-front', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup-front.views', 'restup-front.controllers', 'restup-front.services', 'restup-front.filters'])
 
-.constant('config', {
-  apiUrl: 'http://localhost:8000',
-  webUrl: 'http://localhost:9000'
-})
-
-.run(['$rootScope', '$ionicPlatform', 'config', function($rootScope, $ionicPlatform, config) {
+.run(['$rootScope', '$ionicPlatform', function($rootScope, $ionicPlatform) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -46,7 +41,7 @@ angular.module('restup-front', ['ionic', 'ngCordova', 'restup-front.views', 'res
     .state('app.settings', {
       url: '/settings',
       views: {
-        main: { templateUrl: 'views/settings.html' }
+        main: { templateUrl: 'views/settings.html', controller: 'SettingsCtrl' }
       }
     });
 }]);

@@ -2,10 +2,10 @@
 
 angular.module('restup-front.services', [])
 
-.factory('resource', ['config', '$http', function(config, $http) {
+.factory('resource', ['localStorageService', '$http', function(localStorageService, $http) {
   return {
     query: function(resource, params) {
-      return $http.get(config.apiUrl + resource, params);
+      return $http.get(localStorageService.get('apiUrl') + resource, params);
     }
   };
 }]);
