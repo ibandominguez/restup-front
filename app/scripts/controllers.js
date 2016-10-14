@@ -2,14 +2,16 @@
 
 angular.module('restup.controllers', [])
 
-.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', function($scope, resource, $state, localStorageService, $ionicPopup) {
+.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', '$ionicModal', function($scope, resource, $state, localStorageService, $ionicPopup, $ionicModal) {
+  $scope.loginForm = {};
+
   $scope.getResources = function(cb) {
     resource.query('/resources')
       .success(function(resources) {
         $scope.resources = (Array.isArray(resources)) ? resources : null;
         (typeof cb == 'function') && cb();
       })
-      .error(function(err) {
+      .error(function(err, status) {
         $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
         $state.go('app.settings');
       });
@@ -25,6 +27,25 @@ angular.module('restup.controllers', [])
     });
 
     return fields;
+  };
+
+  $ionicModal.fromTemplateUrl('views/modals/login.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.loginModal = modal;
+  });
+
+  $scope.login = function() {
+    resource.updateOrCreate('/tokens', $scope.loginForm)
+      .success(function(res) {
+        localStorageService.set('token', res.token);
+        $scope.loginModal.hide();
+        $scope.loginForm = {};
+      })
+      .error(function(err, status) {
+        $ionicPopup.alert({ title: 'Error', template: err && err.error, okType: 'button-dark' });
+      });
   };
 
   $scope.getResources();
@@ -57,7 +78,12 @@ angular.module('restup.controllers', [])
 
         $scope.modal.hide();
       })
-      .error(function(err) {
+      .error(function(err, status) {
+        if (status == 401) {
+          return $scope.loginModal.show();
+        }
+
+        $scope.modal.hide();
         $ionicPopup.alert({ title: 'Error', template: err && err.error, okType: 'button-dark' });
       });
   };
@@ -68,7 +94,11 @@ angular.module('restup.controllers', [])
         $scope.modal.hide();
         $scope.results.splice($scope.results.indexOf(item), 1);
       })
-      .error(function(err) {
+      .error(function(err, status) {
+        if (status == 401) {
+          return $scope.loginModal.show();
+        }
+
         $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
       });
   };
@@ -80,6 +110,10 @@ angular.module('restup.controllers', [])
       $scope.showingField = $scope.fields[0].title;
     })
     .error(function(error) {
+      if (status == 401) {
+        return $scope.loginModal.show();
+      }
+
       $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
     })
 }])
