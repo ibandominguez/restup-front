@@ -2,56 +2,80 @@
 
 angular.module('restup-front.controllers', [])
 
-.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$timeout', function($scope, resource, $state, localStorageService, $timeout) {
-  $scope.toastMessage = null;
-
-  $scope.getResourceFields = function(title) {
-    if (!$scope.resources) {
-      return;
-    }
-
-    for (var i = 0; i < $scope.resources.length; i++) {
-      if ($scope.resources[i].title == title) {
-        return $scope.resources[i].fields;
-      }
-    }
-  };
-
-  $scope.toast = function(message, time) {
-    $scope.toastMessage = message;
-
-    $timeout(function() {
-      $scope.toastMessage = null;
-    }, time || 3000);
-  };
-
+.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', function($scope, resource, $state, localStorageService, $ionicPopup) {
   resource.query('/resources')
     .success(function(resources) {
-      $scope.resources = resources;
+      $scope.resources = (Array.isArray(resources)) ? resources : null;
     })
-    .error(function(error) {
-      $scope.toast('Error connecting with the rest api');
+    .error(function(err) {
+      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
       $state.go('app.settings');
     });
+
+  $scope.getResourceFields = function(title) {
+    var fields = null;
+
+    ($scope.resources && $scope.resources.length) && $scope.resources.map(function(item) {
+      if (item.title == title) {
+        fields = item.fields;
+      }
+    });
+
+    return fields;
+  };
 }])
 
-.controller('ResourceCtrl', ['$scope', 'resource', '$stateParams', function($scope, resource, $stateParams) {
-  $scope.results = [];
+.controller('ResourceCtrl', ['$scope', 'resource', '$stateParams', '$ionicModal', '$ionicPopup', function($scope, resource, $stateParams, $ionicModal, $ionicPopup) {
+  $scope.results = null;
   $scope.fields = null;
+  $scope.selectedItem = null;
   $scope.selectedResource = $stateParams.resource;
 
-  resource.query('/' + $scope.selectedResource)
+  $ionicModal.fromTemplateUrl('views/modals/manage.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.manage = function(item) {
+    $scope.selectedItem = item;
+    $scope.modal.show();
+  };
+
+  $scope.updateOrCreate = function(item) {
+    resource.updateOrCreate($scope.selectedResource, item)
+      .success(function(res) {
+        $scope.modal.hide();
+      })
+      .error(function(err) {
+        $ionicPopup.alert({ title: 'Error', template: err && err.error, okType: 'button-dark' });
+      });
+  };
+
+  $scope.remove = function(item) {
+    resource.remove($scope.selectedResource, item)
+      .success(function(res) {
+        $scope.modal.hide();
+        $scope.results.splice($scope.results.indexOf(item), 1);
+      })
+      .error(function(err) {
+        $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
+      });
+  };
+
+  resource.query($scope.selectedResource)
     .success(function(results) {
       $scope.results = results;
       $scope.fields = $scope.getResourceFields($stateParams.resource);
       $scope.showingField = $scope.fields[0].title;
     })
     .error(function(error) {
-      $scope.toast('Error connecting with the rest api');
+      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
     })
 }])
 
-.controller('SettingsCtrl', ['$scope', 'localStorageService', '$window', 'resource', function($scope, localStorageService, $window, resource) {
+.controller('SettingsCtrl', ['$scope', 'localStorageService', '$window', function($scope, localStorageService, $window) {
   $scope.form = {
     webUrl: localStorageService.get('webUrl'),
     apiUrl: localStorageService.get('apiUrl')

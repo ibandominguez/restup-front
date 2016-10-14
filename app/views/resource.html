@@ -1,4 +1,8 @@
 <ion-view view-title="{{ selectedResource | uppercase }}">
+  <ion-nav-buttons side="right" ng-show="false">
+    <button ng-click="manage({})" class="button button-icon button-clear ion-plus-circled">
+    </button>
+  </ion-nav-buttons>
   <ion-content>
     <div class="list">
       <label class="item item-divider item-input item-select">
@@ -9,10 +13,15 @@
         </select>
       </label>
 
-      <a class="item item-icon-right" ng-repeat="item in results track by $index">
+      <a class="item" ng-click="manage(item)" ng-repeat="item in results track by $index">
         <b>{{ item.id }}. </b>
         {{ item[showingField] }}
+        <span class="item-note">{{ item.created_at | toDate | date: 'dd/MM/yyyy' }}</span>
       </a>
+
+      <div class="item" ng-show="!results || !results.length">
+        <b>Oups</b> there are not results on this resource
+      </div>
     </div>
   </ion-content>
 </ion-view>

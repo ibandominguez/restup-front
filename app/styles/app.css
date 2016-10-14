@@ -1,6 +1,10 @@
 
 /* General */
 
+* {
+  border-radius: 0 !important;
+}
+
 body, h1, h2, h3, h4, h5, h6, p, ul, li, a, input, button, select, textarea {
   font-family: 'Roboto', sans-serif;
   color: #555;
@@ -12,9 +16,13 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li, a, input, button, select, textarea {
   margin-top: 0 !important;
 }
 
-/* toast */
+.no-margin-bottom {
+  margin-bottom: 0 !important;
+}
 
-.toast {
+/* fade */
+
+.fade {
   opacity: 0;
   transition: opacity .3s ease-in-out;
   -ms-transition: opacity .3s ease-in-out;
@@ -23,6 +31,6 @@ body, h1, h2, h3, h4, h5, h6, p, ul, li, a, input, button, select, textarea {
   -webkit-transition: opacity .3s ease-in-out;
 }
 
-.toast.on {
+.fade.on {
   opacity: 1;
 }

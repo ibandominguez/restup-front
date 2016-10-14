@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('restup-front', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup-front.views', 'restup-front.controllers', 'restup-front.services', 'restup-front.filters'])
+angular.module('restup-front', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup-front.views', 'restup-front.controllers', 'restup-front.services', 'restup-front.filters', 'restup-front.directives'])
 
-.run(['$rootScope', '$ionicPlatform', function($rootScope, $ionicPlatform) {
+.run(['$rootScope', '$ionicPlatform', 'localStorageService', '$ionicPopup', '$state', function($rootScope, $ionicPlatform, localStorageService, $ionicPopup, $state) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
