@@ -1,12 +1,24 @@
 <ion-view view-title="DASHBOARD">
   <ion-content>
     <div class="list">
-      <div ng-repeat="resource in resources track by $index">
+      <div ng-show="resources" ng-repeat="resource in resources track by $index">
         <div class="item item-divider">{{ resource.title | capitalize }}</div>
         <div class="item" ng-repeat="field in resource.fields track by $index">
           <p>{{ field.title | capitalize }}</p>
           <p>Type: <small>{{ field.type }}</small></p>
           <p>Validation rules: <small>{{ field.rules.split('|').join(', ') }}</small></p>
+        </div>
+      </div>
+
+      <div ng-hide="resources" fade-in>
+        <div class="item item-divider">Ooups!</div>
+        <div class="item">
+          <p>
+            We can´t get any resources listing, make sure you have
+            configured the <b>endpoint</b> correctly!
+          </p>
+
+          <a href="#/app/settings">go to settings</a>
         </div>
       </div>
     </div>

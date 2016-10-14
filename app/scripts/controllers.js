@@ -75,7 +75,7 @@ angular.module('restup-front.controllers', [])
     })
 }])
 
-.controller('SettingsCtrl', ['$scope', 'localStorageService', '$window', 'resource', function($scope, localStorageService, $window, resource) {
+.controller('SettingsCtrl', ['$scope', 'localStorageService', '$window', function($scope, localStorageService, $window) {
   $scope.form = {
     webUrl: localStorageService.get('webUrl'),
     apiUrl: localStorageService.get('apiUrl')
