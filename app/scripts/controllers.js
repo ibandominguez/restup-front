@@ -3,14 +3,17 @@
 angular.module('restup.controllers', [])
 
 .controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', function($scope, resource, $state, localStorageService, $ionicPopup) {
-  resource.query('/resources')
-    .success(function(resources) {
-      $scope.resources = (Array.isArray(resources)) ? resources : null;
-    })
-    .error(function(err) {
-      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
-      $state.go('app.settings');
-    });
+  $scope.getResources = function(cb) {
+    resource.query('/resources')
+      .success(function(resources) {
+        $scope.resources = (Array.isArray(resources)) ? resources : null;
+        (typeof cb == 'function') && cb();
+      })
+      .error(function(err) {
+        $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
+        $state.go('app.settings');
+      });
+  };
 
   $scope.getResourceFields = function(title) {
     var fields = null;
@@ -79,7 +82,7 @@ angular.module('restup.controllers', [])
     })
 }])
 
-.controller('SettingsCtrl', ['$scope', 'localStorageService', '$window', function($scope, localStorageService, $window) {
+.controller('SettingsCtrl', ['$scope', 'localStorageService', '$state', function($scope, localStorageService, $state) {
   $scope.form = {
     webUrl: localStorageService.get('webUrl'),
     apiUrl: localStorageService.get('apiUrl')
@@ -88,6 +91,9 @@ angular.module('restup.controllers', [])
   $scope.save = function() {
     localStorageService.set('webUrl', $scope.form.webUrl);
     localStorageService.set('apiUrl', $scope.form.apiUrl)
-    $window.location.reload();
+
+    $scope.getResources(function() {
+      $state.go('app.dashboard');
+    });
   };
 }]);
