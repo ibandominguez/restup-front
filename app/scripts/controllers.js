@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('restup-front.controllers', [])
+angular.module('restup.controllers', [])
 
 .controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', function($scope, resource, $state, localStorageService, $ionicPopup) {
   resource.query('/resources')
@@ -46,6 +46,10 @@ angular.module('restup-front.controllers', [])
   $scope.updateOrCreate = function(item) {
     resource.updateOrCreate($scope.selectedResource, item)
       .success(function(res) {
+        if (!item.id) {
+          $scope.results.push(res);
+        }
+
         $scope.modal.hide();
       })
       .error(function(err) {

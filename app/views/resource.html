@@ -3,13 +3,13 @@
     <button ng-click="manage({})" class="button button-icon button-clear ion-plus-circled">
     </button>
   </ion-nav-buttons>
-  <ion-content>
+  <ion-content ng-show="fields">
     <div class="list">
       <label class="item item-divider item-input item-select">
         <div class="input-label">
           Show by key:
         </div>
-        <select ng-model="showingField" ng-options="field.title as field.title for field in getResourceFields(selectedResource)">
+        <select ng-model="showingField" ng-options="field.title as field.title for field in fields">
         </select>
       </label>
 

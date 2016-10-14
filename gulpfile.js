@@ -18,7 +18,7 @@ gulp.task('clean', function() {
 gulp.task('views', function() {
   return gulp
     .src('app/views/**/*.html')
-    .pipe(templateCache('views.js', { root: 'views', module: 'restup-front.views', standalone: true }))
+    .pipe(templateCache('views.js', { root: 'views', module: 'restup.views', standalone: true }))
     .pipe(gulp.dest('app/scripts/'));
 });
 
@@ -35,7 +35,7 @@ gulp.task('usemin', function() {
 
 gulp.task('build', function() {
   runSequence(['views', 'clean'], 'usemin', function() {
-    fs.writeFileSync('app/scripts/views.js', 'angular.module("restup-front.views", []);');
+    fs.writeFileSync('app/scripts/views.js', 'angular.module("restup.views", []);');
   });
 
   gulp

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('restup-front', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup-front.views', 'restup-front.controllers', 'restup-front.services', 'restup-front.filters', 'restup-front.directives'])
+angular.module('restup', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup.views', 'restup.controllers', 'restup.services', 'restup.filters', 'restup.directives'])
 
 .run(['$rootScope', '$ionicPlatform', 'localStorageService', '$ionicPopup', '$state', function($rootScope, $ionicPlatform, localStorageService, $ionicPopup, $state) {
   $ionicPlatform.ready(function() {

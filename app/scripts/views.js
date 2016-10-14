@@ -1,1 +1,1 @@
-angular.module("restup-front.views", []);
+angular.module("restup.views", []);
