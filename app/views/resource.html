@@ -18,6 +18,10 @@
         {{ item[showingField] }}
         <span class="item-note">{{ item.created_at | toDate | date: 'dd/MM/yyyy' }}</span>
       </a>
+
+      <div class="item" ng-show="!results || !results.length">
+        <b>Oups</b> there are not results on this resource
+      </div>
     </div>
   </ion-content>
 </ion-view>
