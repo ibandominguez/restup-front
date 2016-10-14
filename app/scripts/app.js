@@ -16,8 +16,9 @@ angular.module('restup', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup.vi
   });
 }])
 
-.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
   $urlRouterProvider.otherwise('/app/dashboard');
+  $httpProvider.interceptors.push('authInterceptor');
 
   $stateProvider
     .state('app', {

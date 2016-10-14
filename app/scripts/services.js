@@ -18,4 +18,27 @@ angular.module('restup.services', [])
       return $http.delete(localStorageService.get('apiUrl') + '/' + resource + '/' + params.id);
     }
   };
+}])
+
+.factory('authInterceptor', ['$q', '$injector', 'localStorageService', function($q, $injector, localStorageService) {
+  return {
+    request: function(config) {
+      var token = localStorageService.get('token');
+
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+      }
+
+      return config;
+    },
+    requestError: function(rejection) {
+      return $q.reject(rejection);
+    },
+    response: function(response) {
+      return response;
+    },
+    responseError: function(rejection) {
+      return $q.reject(rejection);
+    }
+  };
 }]);
