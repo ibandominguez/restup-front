@@ -1,7 +1,7 @@
 <ion-view view-title="DASHBOARD">
   <ion-content>
-    <div class="list">
-      <div ng-show="resources" ng-repeat="resource in resources track by $index">
+    <div class="list" ng-show="resources">
+      <div ng-repeat="resource in resources track by $index">
         <div class="item item-divider">{{ resource.title | capitalize }}</div>
         <div class="item" ng-repeat="field in resource.fields track by $index">
           <p>{{ field.title | capitalize }}</p>

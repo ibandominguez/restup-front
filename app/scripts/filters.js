@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('restup-front.filters', [])
+angular.module('restup.filters', [])
 
 .filter('toDate', [function() {
   return function(input) {

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('restup-front.directives', [])
+angular.module('restup.directives', [])
 
 .directive('fadeIn', ['$timeout', function($timeout) {
   return {

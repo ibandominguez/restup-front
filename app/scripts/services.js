@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('restup-front.services', [])
+angular.module('restup.services', [])
 
 .factory('resource', ['localStorageService', '$http', function(localStorageService, $http) {
   return {
