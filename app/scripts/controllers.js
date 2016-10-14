@@ -26,6 +26,8 @@ angular.module('restup.controllers', [])
 
     return fields;
   };
+
+  $scope.getResources();
 }])
 
 .controller('ResourceCtrl', ['$scope', 'resource', '$stateParams', '$ionicModal', '$ionicPopup', function($scope, resource, $stateParams, $ionicModal, $ionicPopup) {
