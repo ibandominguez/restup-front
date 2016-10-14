@@ -2,31 +2,31 @@
 
 angular.module('restup-front.controllers', [])
 
-.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', function($scope, resource, $state, localStorageService) {
-  $scope.getResourceFields = function(title) {
-    if (!$scope.resources) {
-      return;
-    }
-
-    for (var i = 0; i < $scope.resources.length; i++) {
-      if ($scope.resources[i].title == title) {
-        return $scope.resources[i].fields;
-      }
-    }
-  };
-
+.controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', function($scope, resource, $state, localStorageService, $ionicPopup) {
   resource.query('/resources')
     .success(function(resources) {
-      $scope.resources = resources;
+      $scope.resources = (Array.isArray(resources)) ? resources : null;
     })
-    .error(function(error) {
+    .error(function(err) {
       $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
       $state.go('app.settings');
     });
+
+  $scope.getResourceFields = function(title) {
+    var fields = null;
+
+    ($scope.resources && $scope.resources.length) && $scope.resources.map(function(item) {
+      if (item.title == title) {
+        fields = item.fields;
+      }
+    });
+
+    return fields;
+  };
 }])
 
 .controller('ResourceCtrl', ['$scope', 'resource', '$stateParams', '$ionicModal', '$ionicPopup', function($scope, resource, $stateParams, $ionicModal, $ionicPopup) {
-  $scope.results = [];
+  $scope.results = null;
   $scope.fields = null;
   $scope.selectedItem = null;
   $scope.selectedResource = $stateParams.resource;

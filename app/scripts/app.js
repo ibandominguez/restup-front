@@ -2,7 +2,7 @@
 
 angular.module('restup-front', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup-front.views', 'restup-front.controllers', 'restup-front.services', 'restup-front.filters'])
 
-.run(['$rootScope', '$ionicPlatform', function($rootScope, $ionicPlatform) {
+.run(['$rootScope', '$ionicPlatform', 'localStorageService', '$ionicPopup', '$state', function($rootScope, $ionicPlatform, localStorageService, $ionicPopup, $state) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -12,6 +12,13 @@ angular.module('restup-front', ['ionic', 'ngCordova', 'LocalStorageModule', 'res
     if (window.StatusBar) {
       $cordovaStatusbar.overlaysWebView(true);
       $cordovaStatusbar.style(1);
+    }
+  });
+
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    if (!localStorageService.get('apiUrl') && toState.name != 'app.settings') {
+      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
+      $state.go('app.settings');
     }
   });
 }])
