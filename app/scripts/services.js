@@ -8,7 +8,7 @@ angular.module('restup.services', [])
       return $http.get(localStorageService.get('apiUrl') + '/' + resource, params);
     },
     updateOrCreate: function(resource, params) {
-      if (params.id) {
+      if (params && params.id) {
         return $http.put(localStorageService.get('apiUrl') + '/' + resource + '/' + params.id, params);
       }
 
@@ -38,6 +38,10 @@ angular.module('restup.services', [])
       return response;
     },
     responseError: function(rejection) {
+      if (rejection.status) {
+        $injector.get('$state').go('app.authentication');
+      }
+
       return $q.reject(rejection);
     }
   };
