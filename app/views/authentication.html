@@ -1,0 +1,26 @@
+<ion-view view-title="AUTHENTICATION">
+  <ion-content>
+    <div class="list">
+      <div class="item item-divider">
+        <h2>Authorization</h2>
+        <p>
+          Some routes might be auth protected
+        </p>
+      </div>
+
+      <p class="item" ng-show="auth">
+        You have already authenticated
+      </p>
+
+      <label class="item item-input">
+        <span class="input-label">Email</span>
+        <input ng-model="form.email" type="email">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Password</span>
+        <input ng-model="form.password" type="password">
+      </label>
+      <button class="button button-full button-stable no-margin-top no-margin-bottom" ng-click="login()">SEND</button>
+    </div>
+  </ion-content>
+</ion-view>

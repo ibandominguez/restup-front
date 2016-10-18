@@ -44,5 +44,11 @@ angular.module('restup', ['ionic', 'ngCordova', 'LocalStorageModule', 'restup.vi
       views: {
         main: { templateUrl: 'views/settings.html', controller: 'SettingsCtrl' }
       }
+    })
+    .state('app.authentication', {
+      url: '/authentication',
+      views: {
+        main: { templateUrl: 'views/authentication.html', controller: 'AuthenticationCtrl' }
+      }
     });
 }]);

@@ -3,8 +3,6 @@
 angular.module('restup.controllers', [])
 
 .controller('AppCtrl', ['$scope', 'resource', '$state', 'localStorageService', '$ionicPopup', '$ionicModal', function($scope, resource, $state, localStorageService, $ionicPopup, $ionicModal) {
-  $scope.loginForm = {};
-
   $scope.getResources = function(cb) {
     resource.query('/resources')
       .success(function(resources) {
@@ -12,7 +10,9 @@ angular.module('restup.controllers', [])
         (typeof cb == 'function') && cb();
       })
       .error(function(err, status) {
-        $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
+        var error = status == 401 ? 'Authorization required' : (err && err.error) || 'Error connecting';
+
+        $ionicPopup.alert({ title: 'Error', template: error, okType: 'button-dark' });
         $state.go('app.settings');
       });
   };
@@ -27,25 +27,6 @@ angular.module('restup.controllers', [])
     });
 
     return fields;
-  };
-
-  $ionicModal.fromTemplateUrl('views/modals/login.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.loginModal = modal;
-  });
-
-  $scope.login = function() {
-    resource.updateOrCreate('/tokens', $scope.loginForm)
-      .success(function(res) {
-        localStorageService.set('token', res.token);
-        $scope.loginModal.hide();
-        $scope.loginForm = {};
-      })
-      .error(function(err, status) {
-        $ionicPopup.alert({ title: 'Error', template: err && err.error, okType: 'button-dark' });
-      });
   };
 
   $scope.getResources();
@@ -79,12 +60,10 @@ angular.module('restup.controllers', [])
         $scope.modal.hide();
       })
       .error(function(err, status) {
-        if (status == 401) {
-          return $scope.loginModal.show();
-        }
+        var error = status == 401 ? 'Authorization required' : (err && err.error) || 'Error connecting';
 
         $scope.modal.hide();
-        $ionicPopup.alert({ title: 'Error', template: err && err.error, okType: 'button-dark' });
+        $ionicPopup.alert({ title: 'Error', template: err && error, okType: 'button-dark' });
       });
   };
 
@@ -95,11 +74,9 @@ angular.module('restup.controllers', [])
         $scope.results.splice($scope.results.indexOf(item), 1);
       })
       .error(function(err, status) {
-        if (status == 401) {
-          return $scope.loginModal.show();
-        }
+        var error = status == 401 ? 'Authorization required' : (err && err.error) || 'Error connecting';
 
-        $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
+        $ionicPopup.alert({ title: 'Error', template: error, okType: 'button-dark' });
       });
   };
 
@@ -109,12 +86,10 @@ angular.module('restup.controllers', [])
       $scope.fields = $scope.getResourceFields($stateParams.resource);
       $scope.showingField = $scope.fields[0].title;
     })
-    .error(function(error) {
-      if (status == 401) {
-        return $scope.loginModal.show();
-      }
+    .error(function(err, status) {
+      var error = status == 401 ? 'Authorization required' : (err && err.error) || 'Error connecting';
 
-      $ionicPopup.alert({ title: 'Error', template: 'Error connecting with the rest api', okType: 'button-dark' });
+      $ionicPopup.alert({ title: 'Error', template: error, okType: 'button-dark' });
     })
 }])
 
@@ -126,10 +101,28 @@ angular.module('restup.controllers', [])
 
   $scope.save = function() {
     localStorageService.set('webUrl', $scope.form.webUrl);
-    localStorageService.set('apiUrl', $scope.form.apiUrl)
+    localStorageService.set('apiUrl', $scope.form.apiUrl);
 
     $scope.getResources(function() {
       $state.go('app.dashboard');
     });
+  };
+}])
+
+.controller('AuthenticationCtrl', ['$scope', 'resource', '$ionicPopup', 'localStorageService', function($scope, resource, $ionicPopup, localStorageService) {
+  $scope.form = {};
+  $scope.auth = localStorageService.get('token');
+
+  $scope.login = function() {
+    resource.updateOrCreate('/tokens', $scope.form)
+      .success(function(res) {
+        localStorageService.set('token', res.token);
+        $scope.form = {};
+      })
+      .error(function(err, status) {
+        var error = status == 401 ? 'Authorization required' : (err && err.error) || 'Error connecting';
+
+        $ionicPopup.alert({ title: 'Error', template: err && error, okType: 'button-dark' });
+      });
   };
 }]);
