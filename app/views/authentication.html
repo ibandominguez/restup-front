@@ -7,6 +7,11 @@
           Some routes might be auth protected
         </p>
       </div>
+
+      <p class="item" ng-show="auth">
+        You have already authenticated
+      </p>
+
       <label class="item item-input">
         <span class="input-label">Email</span>
         <input ng-model="form.email" type="email">

@@ -117,7 +117,6 @@ angular.module('restup.controllers', [])
     resource.updateOrCreate('/tokens', $scope.form)
       .success(function(res) {
         localStorageService.set('token', res.token);
-        $scope.loginModal.hide();
         $scope.form = {};
       })
       .error(function(err, status) {
