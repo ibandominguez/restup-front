@@ -101,7 +101,7 @@ angular.module('restup.controllers', [])
 
   $scope.save = function() {
     localStorageService.set('webUrl', $scope.form.webUrl);
-    localStorageService.set('apiUrl', $scope.form.apiUrl)
+    localStorageService.set('apiUrl', $scope.form.apiUrl);
 
     $scope.getResources(function() {
       $state.go('app.dashboard');

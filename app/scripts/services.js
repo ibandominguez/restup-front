@@ -20,7 +20,7 @@ angular.module('restup.services', [])
   };
 }])
 
-.factory('authInterceptor', ['$q', '$injector', 'localStorageService', function($q, $injector, localStorageService) {
+.factory('authInterceptor', ['$q', '$injector', 'localStorageService', '$rootScope', function($q, $injector, localStorageService, $rootScope) {
   return {
     request: function(config) {
       var token = localStorageService.get('token');
@@ -29,15 +29,20 @@ angular.module('restup.services', [])
         config.headers['Authorization'] = 'Bearer ' + token;
       }
 
+      $rootScope.loading = ($rootScope.loading || 0) + 1;
+
       return config;
     },
     requestError: function(rejection) {
       return $q.reject(rejection);
     },
     response: function(response) {
+      $rootScope.loading = ($rootScope.loading || 0) - 1;
       return response;
     },
     responseError: function(rejection) {
+      $rootScope.loading = ($rootScope.loading || 0) - 1;
+
       if (rejection.status) {
         $injector.get('$state').go('app.authentication');
       }
